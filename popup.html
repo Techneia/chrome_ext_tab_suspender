@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tab Suspender</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>Tab Suspender</h1>
+            <div class="header-actions">
+                <button id="settings-btn" class="btn-icon" title="Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path
+                            d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.1a2 2 0 0 1-1-1.72v-.51a2 2 0 0 1 1-1.74l-.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z">
+                        </path>
+                        <circle cx="12" cy="12" r="3"></circle>
+                    </svg>
+                </button>
+                <button id="theme-toggle" class="btn-icon" title="Toggle Theme">
+                    <!-- Icon set by JS -->
+                </button>
+                <button id="selection-toggle" class="btn-icon" title="Toggle Selection Mode">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 11l3 3L22 4" />
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+                    </svg>
+                </button>
+                <button id="refresh-btn" class="btn-icon" title="Refresh List">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="23 4 23 10 17 10"></polyline>
+                        <polyline points="1 20 1 14 7 14"></polyline>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="search-container">
+            <input type="text" id="search-input" placeholder="Search tabs...">
+            <select id="sort-select" title="Sort by">
+                <option value="active">Active First</option>
+                <option value="recent">Recently Used</option>
+                <option value="title">Title</option>
+                <option value="url">URL</option>
+            </select>
+        </div>
+
+        <div class="controls">
+            <button id="suspend-selected" class="btn primary">Suspend Selected</button>
+            <button id="suspend-all" class="btn danger">Suspend All</button>
+        </div>
+
+        <!-- Group controls removed -->
+
+        <div class="scroll-list-container">
+            <div id="tab-list" class="scroll-list">
+                <!-- Tabs will be injected here -->
+                <div class="loading">Loading tabs...</div>
+            </div>
+            <div class="top-gradient"></div>
+            <div class="bottom-gradient"></div>
+        </div>
+    </div>
+
+    <!-- Settings Overlay -->
+    <div id="settings-overlay" class="settings-overlay hidden">
+        <div class="settings-content">
+            <div class="settings-header">
+                <h2>Tab Suspension Settings</h2>
+                <button id="close-settings" class="btn-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="settings-section">
+                <h3>SUSPEND TABS</h3>
+                <div class="setting-row">
+                    <label class="radio-label">
+                        <input type="radio" name="suspend-mode" value="max-tabs" id="mode-max-tabs">
+                        <span>Keep maximum of</span>
+                        <input type="number" id="max-tabs-count" min="1" value="25" class="setting-input-number">
+                        <span>recent tabs in memory and suspend the rest</span>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label class="radio-label">
+                        <input type="radio" name="suspend-mode" value="auto-timer" id="mode-auto-timer">
+                        <span>Automatically suspend tabs after</span>
+                        <select id="auto-suspend-timer" class="setting-select">
+                            <option value="1">1 minute</option>
+                            <option value="5">5 minutes</option>
+                            <option value="15">15 minutes</option>
+                            <option value="30" selected>30 minutes</option>
+                            <option value="60">1 hour</option>
+                            <option value="120">2 hours</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="setting-row">
+                    <label class="radio-label">
+                        <input type="radio" name="suspend-mode" value="manual" id="mode-manual">
+                        <span>Manual suspension only (disable auto-suspend)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>EXCLUSIONS</h3>
+                <div class="setting-row">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="ignore-audible" checked>
+                        <span>Never suspend tabs that are playing audio or video</span>
+                    </label>
+                </div>
+                <div class="setting-row align-top">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="use-whitelist">
+                        <span>Never suspend tabs from this list:</span>
+                    </label>
+                    <div class="whitelist-container">
+                        <textarea id="whitelist-domains"
+                            placeholder="Exclude entire domain:&#10;example.com&#10;google.com" rows="4"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="popup.js"></script>
+</body>
+
+</html>

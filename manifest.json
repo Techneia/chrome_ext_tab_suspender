@@ -1,0 +1,25 @@
+{
+    "manifest_version": 3,
+    "name": "Chrome Tab Suspender",
+    "version": "1.0",
+    "description": "List, group, and suspend active tabs to save memory.",
+    "permissions": [
+        "tabs",
+        "contextMenus",
+        "sidePanel",
+        "storage",
+        "alarms"
+    ],
+    "background": {
+        "service_worker": "background.js"
+    },
+    "action": {},
+    "side_panel": {
+        "default_path": "popup.html"
+    },
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    }
+}
