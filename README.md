@@ -51,3 +51,4 @@ Como esta extensión aún no está en la Chrome Web Store, puedes instalarla man
 ## Licencia
 
 Este proyecto está bajo la Licencia Apache 2.0. Consulta el archivo `LICENSE` para más detalles.
+# chrome_ext_tab_suspender
