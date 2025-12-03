@@ -54,3 +54,4 @@ Este proyecto está bajo la Licencia Apache 2.0. Consulta el archivo `LICENSE` p
 # chrome_ext_tab_suspender
 # chrome_ext_tab_suspender
 # chrome_ext_tab_suspender
+# chrome_ext_tab_suspender
