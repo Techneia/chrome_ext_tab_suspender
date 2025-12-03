@@ -267,7 +267,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
             renderTabs(filterTabs(currentTabs));
         } catch (error) {
-            tabList.innerHTML = `<div class="error">Error loading tabs: ${error.message}</div>`;
+            const errorDiv = document.createElement('div');
+            errorDiv.className = 'error';
+            errorDiv.textContent = `Error loading tabs: ${error.message}`;
+            tabList.innerHTML = '';
+            tabList.appendChild(errorDiv);
         }
     }
 

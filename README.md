@@ -50,6 +50,22 @@ Como esta extensión aún no está en la Chrome Web Store, puedes instalarla man
 3.  Usa el **icono de selección** (cuadrado con check) para activar el modo de selección múltiple.
 4.  Usa el **icono de sol/luna** para cambiar entre tema claro y oscuro.
 
+## Informe de Seguridad
+
+Se ha realizado una revisión de seguridad del código para identificar vulnerabilidades.
+
+### Hallazgos
+
+*   **XSS (Cross-Site Scripting)**: El código es seguro. Se utiliza `textContent` para mostrar contenido generado por el usuario (títulos de pestañas y URLs), lo que previene la inyección de scripts.
+*   **Permisos**: Los permisos solicitados en `manifest.json` (`tabs`, `storage`, `alarms`) son estrictamente necesarios para las funcionalidades ofrecidas y no son excesivamente amplios.
+*   **Política de Seguridad de Contenidos (CSP)**: Manifest V3 impone una CSP estricta por defecto, lo que previene scripts en línea y el uso de `eval()`, añadiendo una capa robusta de seguridad.
+
+### Correcciones Aplicadas
+
+*   Se identificó una instancia menor donde un mensaje de error se insertaba usando `innerHTML`. Aunque el riesgo era bajo, se reemplazó con `textContent` para asegurar que, incluso si un mensaje de error contuviera HTML malicioso, se renderizaría como texto plano.
+
+La extensión es segura y está lista para su uso.
+
 ## Licencia
 
 Este proyecto está bajo la Licencia Apache 2.0. Consulta el archivo `LICENSE` para más detalles.
