@@ -2,6 +2,8 @@
 
 Una extensión de Google Chrome ligera y moderna para gestionar y suspender pestañas automáticamente, ahorrando memoria y mejorando el rendimiento de tu navegador.
 
+![Imagen descriptiva de la extensión ya instalada](/assets/screenshot.png)
+
 ## Características
 
 *   **Suspensión Automática**: Configura un temporizador para suspender pestañas inactivas automáticamente.
